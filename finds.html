@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lost & Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: #f4f5f3;
+            color: #1a1a1a;
+            transition: background 0.4s ease, color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.75);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 90px;
+            border-bottom: 1px solid #d6d8d7;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .logo span {
+            font-weight: 600;
+            font-size: 1.35rem;
+            letter-spacing: 0.3px;
+        }
+
+
+        nav button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #414141;
+            position: relative;
+        }
+
+        nav button a {
+            text-decoration: none;
+            color: inherit;
+            /* inherits from button */
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s ease;
+        }
+
+        nav button:hover {
+            transform: translateY(-2px);
+            color: #00796b;
+        }
+
+        nav button a:hover {
+            color: #00796b;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            width: 100%;
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(to bottom, #fcfbe9, #e5dfca);
+            position: relative;
+            overflow: hidden;
+            
+        }
+
+        .hero img {
+            width: 100%;
+            max-height: 550px;
+            object-fit: cover;
+            filter: blur(0px);
+            border-radius: 0;
+            /* Keep edges clean */
+            transition: filter 0.4s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-top: 25px;
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 15px auto;
+            color: #555;
+        }
+
+        main {
+            padding: 50px 80px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== FORM ===== */
+        form {
+            width: calc(100% - 100px);
+            max-width: 1200px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        form h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #00bfa6;
+            box-shadow: 0 0 8px rgba(0, 191, 166, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #00796b, #00bfa6);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 191, 166, 0.3);
+        }
+
+
+
+        /* ===== FILTER BAR ===== */
+        .filters {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 40px auto;
+            width: calc(100% - 100px);
+            max-width: 1200px;
+        }
+
+        .filters input {
+            flex: 9;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .filters select {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .filters input:focus,
+        .filters select:focus {
+            border-color: #00bfa6;
+            box-shadow: 0 0 8px rgba(0, 191, 166, 0.3);
+        }
+
+        /* ===== ITEMS ===== */
+        .items-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 35px;
+            padding: 0 50px 80px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            transition: 0.4s;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .item-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .item-card img {
+            width: 100%;
+            height: 180px;
+            border-radius: 14px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            background: #eaeaea;
+        }
+
+        .item-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .item-card p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            font-weight: 600;
+            color: #00796b;
+            margin-bottom: 8px;
+        }
+
+        .claim-btn {
+            background: linear-gradient(90deg, #00796b, #00bfa6);
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .claim-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(0, 191, 166, 0.4);
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #00bfa6, #00796b);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f4f5f3;
+        }
+
+
+        /* ===== REPORT CARDS ===== */
+        .reports-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            transition: 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .report-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .report-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 6px;
+        }
+
+        .report-card p {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .report-card .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .actions button {
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .actions .edit {
+            background: #ffb74d;
+            color: white;
+        }
+
+        .actions .edit:hover {
+            background: #ffa726;
+        }
+
+        .actions .delete {
+            background: #ef5350;
+            color: white;
+        }
+
+        .actions .delete:hover {
+            background: #e53935;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #111;
+            color: #eee;
+            font-size: 0.9rem;
+            margin-top: 60px;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+        }
+
+        footer span {
+            color: #00bfa6;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://d3bat55ebwjhsf.cloudfront.net/schools/2025-06-26_23-53-50/01mo/infra/images/unnamed_42.webp"
+                alt="Logo">
+            <span>Lost &amp; Found</span>
+        </div>
+        <nav>
+            <button><a href="index.html">Home</a></button>
+            <button id="finds-tab" class="active">Finds</button>
+            <button id="reports-tab" class="active">My Reports</button>
+            <button><a href="about.html">About</a></button>
+            <button><a href="login.html">Login</a></button>
+            <button><a href="sign up.html">Sign Up</a></button>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <img src="pictures/download (2).jpg" alt="Lost and Found Banner">
+        <h1>Items Recently Found on Campus</h1>
+        <p>Browse all items found on campus. You can search or filter, and claim your lost item.</p>
+    </div>
+
+    <main>
+        <!-- Finds Section -->
+        <section id="finds" class="section active">
+            <form id="reportForm">
+                <h2>Report a Lost or Found Item</h2>
+                <label>Item Name</label>
+                <input type="text" id="itemName" required placeholder="E.g. Blue Bottle" />
+
+                <label>Description</label>
+                <textarea id="description" rows="3" required placeholder="Briefly describe the item..."></textarea>
+
+                <label>Date</label>
+                <input type="date" id="date" required />
+
+                <label>Location</label>
+                <input type="text" id="location" required placeholder="Where was it lost/found?" />
+
+                <label>Contact Info [Phone Number/Email ID]</label>
+                <input type="text" id="contact" required placeholder="Your contact info" />
+
+                <label>Image (optional)</label>
+                <input type="file" id="image" accept="image/*" />
+
+                <button type="submit" class="submit-btn">Submit Report</button>
+            </form>
+        </section>
+
+        <!-- My Reports Section -->
+        <section id="myReports" class="section">
+            <h2 style="text-align:center;">My Reports</h2>
+            <div class="reports-container" id="reportsContainer"></div>
+        </section>
+    </main>
+
+    <div class="filters">
+        <input type="text" id="searchBox" placeholder="Search item name..." />
+        <select id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Books">Books</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Others">Others</option>
+        </select>
+    </div>
+
+    <section class="items-container" id="itemList">
+        <div class="item-card" data-category="Accessories">
+            <img src="pictures\images (2).jpeg" alt="Blue Water Bottle" />
+            <h3>Blue Water Bottle</h3>
+            <p>Found near the basketball court by <b>niraj k.</b> on Nov 2.</p>
+            <div class="status">Status: Unclaimed</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Clothing">
+            <img src="pictures\download (2).jpeg" alt="Black Hoodie" />
+            <h3>Black Hoodie</h3>
+            <p>Left in classroom 10A after lunch break. Reported by <b>Kanav K.</b>.</p>
+            <div class="status">Status: Claimed (Pending Verification)</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Books">
+            <img src="pictures\download (3).jpeg" alt="Maths Book" />
+            <h3>Mathematics Textbook</h3>
+            <p>Found near the library stairs by <b>Reyansh P.</b> on Nov 1.</p>
+            <div class="status">Status: Unclaimed</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Electronics">
+            <img src="pictures\download (1).jpeg" alt="Cap" />
+            <h3>CAP</h3>
+            <p>Found in the auditorium after assembly by <b>Yash M.</b>.</p>
+            <div class="status">Status: Claimed (Verified)</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Others">
+            <img src="pictures\images.jpeg" alt="Pencil Box" />
+            <h3>Pencil Box</h3>
+            <p>Found in canteen area by <b>Shreya T.</b> on Nov 3.</p>
+            <div class="status">Status: Unclaimed</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Others">
+            <img src="pictures\download.jpeg" alt="Notebook" />
+            <h3>Notebook</h3>
+            <p>Found classroom 99 area by <b>Ananya K.</b> on Nov 3.</p>
+            <div class="status">Status: Unclaimed</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Others">
+            <img src="pictures\718Asy37LWL.jpg" alt="Tiffin" />
+            <h3>Tiffin</h3>
+            <p>Found on playground area by <b>Aarushi M.</b> on Nov 3.</p>
+            <div class="status">Status: Unclaimed</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+
+        <div class="item-card" data-category="Others">
+            <img src="pictures\images (1).jpeg" alt="Umbrella" />
+            <h3>Umbrella</h3>
+            <p>Found in classroom 205 by <b>Shivangi R.</b> on Nov 3.</p>
+            <div class="status">Status: Unclaimed</div>
+            <button class="claim-btn">This is mine!</button>
+        </div>
+    </section>
+
+    <footer>© 2025 Pawar Public School | Designed with <span>Care</span></footer>
+
+
+
+    <script>
+        // Reveal animation
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add("visible");
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll(".item-card").forEach(c => observer.observe(c));
+
+        // Filters
+        const searchBox = document.getElementById("searchBox");
+        const categoryFilter = document.getElementById("categoryFilter");
+        const items = document.querySelectorAll(".item-card");
+
+        function filterItems() {
+            const s = searchBox.value.toLowerCase();
+            const cat = categoryFilter.value;
+            items.forEach(i => {
+                const n = i.querySelector("h3").textContent.toLowerCase();
+                const matchS = n.includes(s);
+                const matchC = !cat || i.dataset.category === cat;
+                i.style.display = matchS && matchC ? "block" : "none";
+            });
+        }
+        searchBox.addEventListener("input", filterItems);
+        categoryFilter.addEventListener("change", filterItems);
+
+
+        // === NAVIGATION SWITCH ===
+        const findsTab = document.getElementById("finds-tab");
+        const reportsTab = document.getElementById("reports-tab");
+        const findsSection = document.getElementById("finds");
+        const reportsSection = document.getElementById("myReports");
+
+        findsTab.onclick = () => {
+            findsTab.classList.add("active");
+            reportsTab.classList.remove("active");
+            findsSection.classList.add("active");
+            reportsSection.classList.remove("active");
+        };
+
+        reportsTab.onclick = () => {
+            reportsTab.classList.add("active");
+            findsTab.classList.remove("active");
+            reportsSection.classList.add("active");
+            findsSection.classList.remove("active");
+            loadReports();
+        };
+
+        // === CREATE (SAVE TO LOCAL STORAGE) ===
+        const form = document.getElementById("reportForm");
+        const imgInput = document.getElementById("image");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const newReport = {
+                id: Date.now(),
+                itemName: document.getElementById("itemName").value,
+                description: document.getElementById("description").value,
+                date: document.getElementById("date").value,
+                location: document.getElementById("location").value,
+                contact: document.getElementById("contact").value,
+                image: ""
+            };
+
+            const file = imgInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    newReport.image = event.target.result;
+                    saveReport(newReport);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                saveReport(newReport);
+            }
+
+            form.reset();
+            alert("Report added successfully ");
+        });
+
+        function saveReport(report) {
+            const reports = JSON.parse(localStorage.getItem("reports")) || [];
+            reports.push(report);
+            localStorage.setItem("reports", JSON.stringify(reports));
+        }
+
+        // === READ (DISPLAY REPORTS) ===
+        function loadReports() {
+            const container = document.getElementById("reportsContainer");
+            container.innerHTML = "";
+            const reports = JSON.parse(localStorage.getItem("reports")) || [];
+
+            if (reports.length === 0) {
+                container.innerHTML = "<p style='text-align:center;color:#777;'>No reports yet.</p>";
+                return;
+            }
+
+            reports.forEach((report) => {
+                const card = document.createElement("div");
+                card.className = "report-card";
+                card.innerHTML = `
+          ${report.image ? `<img src="${report.image}" alt="${report.itemName}" />` : ""}
+          <h3 contenteditable="false">${report.itemName}</h3>
+          <p contenteditable="false">${report.description}</p>
+          <p><b>Date:</b> ${report.date}</p>
+          <p><b>Location:</b> ${report.location}</p>
+          <p><b>Contact:</b> ${report.contact}</p>
+          <div class="actions">
+            <button class="edit">Edit</button>
+            <button class="delete">Delete</button>
+          </div>
+        `;
+
+                // DELETE
+                card.querySelector(".delete").onclick = () => {
+                    const updated = reports.filter(r => r.id !== report.id);
+                    localStorage.setItem("reports", JSON.stringify(updated));
+                    loadReports();
+                };
+
+                // EDIT (INLINE)
+                card.querySelector(".edit").onclick = (e) => {
+                    const btn = e.target;
+                    const isEditing = btn.textContent === "Save";
+                    const h3 = card.querySelector("h3");
+                    const p = card.querySelector("p");
+
+                    if (isEditing) {
+                        // Save changes
+                        h3.contentEditable = p.contentEditable = "false";
+                        btn.textContent = "Edit";
+
+                        report.itemName = h3.textContent.trim();
+                        report.description = p.textContent.trim();
+                        const updated = reports.map(r => r.id === report.id ? report : r);
+                        localStorage.setItem("reports", JSON.stringify(updated));
+                        loadReports();
+                    } else {
+                        // Enable editing
+                        h3.contentEditable = p.contentEditable = "true";
+                        h3.focus();
+                        btn.textContent = "Save";
+                    }
+                };
+
+                container.appendChild(card);
+
+                const CLAIM_KEY = "claimed_items_v1";
+
+                const claimedData = JSON.parse(localStorage.getItem(CLAIM_KEY)) || {};
+
+                document.querySelectorAll(".item-card").forEach((card, index) => {
+                    const btn = card.querySelector(".claim-btn");
+                    const status = card.querySelector(".status");
+
+                    if (claimedData[index]) {
+                        applyClaimedState(btn, status, false);
+                    }
+
+                    btn.addEventListener("click", () => {
+                        if (btn.disabled) return;
+
+                        btn.classList.add("claim-animate");
+
+                        setTimeout(() => {
+                            applyClaimedState(btn, status, true);
+                            claimedData[index] = true;
+                            localStorage.setItem(CLAIM_KEY, JSON.stringify(claimedData));
+                        }, 300);
+                    });
+                });
+
+                function applyClaimedState(btn, status, animate) {
+                    status.textContent = "Status: Request Sent";
+
+                    btn.textContent = "Request Sent";
+                    btn.disabled = true;
+
+                    btn.style.background = "linear-gradient(90deg, #fbc02d, #fdd835)";
+                    btn.style.color = "#333";
+                    btn.style.cursor = "not-allowed";
+                    btn.style.boxShadow = "0 0 12px rgba(251, 192, 45, 0.6)";
+
+                    if (animate) {
+                        btn.animate(
+                            [
+                                { transform: "scale(1)" },
+                                { transform: "scale(1.12)" },
+                                { transform: "scale(1)" }
+                            ],
+                            {
+                                duration: 400,
+                                easing: "ease-out"
+                            }
+                        );
+                    }
+                }
+
+
+            });
+        }
+
+    </script>
+</body>
+
+</html>
